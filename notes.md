@@ -26,4 +26,8 @@ devices: [
 ]
 
 instead of onClick - onChange
+  Because you're already calling the method on render.
+
+  change onChange={this.handleCheck()} to onChange={this.handleCheck}
+  http://stackoverflow.com/questions/34936987/why-is-my-react-checkbox-onchange-handler-firing-on-render-and-then-not-when-the
 handleChange
