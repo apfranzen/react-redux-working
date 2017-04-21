@@ -1,13 +1,13 @@
 import axios from "axios";
 
-export function fetchTweets() {
+export function fetchData() {
   return function(dispatch) {
-    axios.get("http://rest.learncode.academy/api/afran/tweets")
+    axios.get("http://localhost:8080/search?query=heart")
       .then((response) => {
-        dispatch({type: "FETCH_TWEETS_FULFILLED", payload: response.data})
+        dispatch({type: "FETCH_DATA_FULFILLED", payload: response.data})
       })
       .catch((err) => {
-        dispatch({type: "FETCH_TWEETS_REJECTED", payload: err})
+        dispatch({type: "FETCH_DATA_FULFILLED", payload: err})
       })
   }
 }

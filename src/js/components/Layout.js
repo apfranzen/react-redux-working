@@ -2,7 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 
 import { fetchUser } from "../actions/userActions"
-import { fetchTweets } from "../actions/tweetsActions"
+import { fetchData } from "../actions/dataActions"
 
 /*
 @connect(a, b) - expects 2 different functions
@@ -17,34 +17,44 @@ export default class Layout extends React.Component {
 }
 */
 @connect((store) => {
+  console.log(store)
   return {
     user: store.user.user,
     userFetched: store.user.fetched,
-    tweets: store.tweets.tweets,
+    lowestLevelTerms: store.data.lowestLevelTerms,
   };
 })
 export default class Layout extends React.Component {
+  const 
   // this is pulling in the users
-  componentWillMount() {
-    this.props.dispatch(fetchUser())
-  }
+  // componentWillMount() {
+  //   this.props.dispatch(fetchUser())
+  // }
 
-  fetchTweets() {
-    this.props.dispatch(fetchTweets())
+  fetchData() {
+    this.props.dispatch(fetchData())
   }
 
   render() {
-    const { user, tweets } = this.props;
+    const { user, lowestLevelTerms } = this.props;
+    console.log(lowestLevelTerms)
 
-    if (!tweets.length) {
-      return <button onClick={this.fetchTweets.bind(this)}>load tweets</button>
-    }
+    // if (!lowestLevelTerms.length) {
+    //   return <button onClick={this.fetchData.bind(this)}>load cadvent suggestions</button>
+    // }
 
-    const mappedTweets = tweets.map(tweet => <li>{tweet.id}</li>)
+    const mappedSuggestions = lowestLevelTerms.map(lowestLevelTerm => <li>{lowestLevelTerm.term.name}</li>)
 
     return <div>
-      <h1>{this.props.user.name}</h1>
-      <ul>{mappedTweets}</ul>
+      {/*<h1>{this.props.user.name}</h1>*/}
+      <h1>Untoured Events</h1>
+      <form>
+        <input type="text" value={this.props.reaction} onChange={this.fetchData.bind(this)} />
+      </form>
+      <button onClick={this.fetchData.bind(this)}>load cadvent suggestions</button>
+      
+      <h3>Low Level Terms</h3>
+        <ul>{mappedSuggestions}</ul>
     </div>
   }
 }

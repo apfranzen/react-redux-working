@@ -1,23 +1,25 @@
 export default function reducer(state={
-    tweets: [],
+    lowestLevelTerms: [],
     fetching: false,
     fetched: false,
     error: null,
   }, action) {
 
     switch (action.type) {
-      case "FETCH_TWEETS": {
+      case "FETCH_DATA": {
         return {...state, fetching: true}
       }
-      case "FETCH_TWEETS_REJECTED": {
+      case "FETCH_DATA_REJECTED": {
         return {...state, fetching: false, error: action.payload}
       }
-      case "FETCH_TWEETS_FULFILLED": {
+      case "FETCH_DATA_FULFILLED": {
+        console.log('state ', state)
+        console.log('action ', action)
         return {
           ...state,
           fetching: false,
           fetched: true,
-          tweets: action.payload,
+          lowestLevelTerms: action.payload['lowest-level-terms'],
         }
       }
       case "ADD_TWEET": {

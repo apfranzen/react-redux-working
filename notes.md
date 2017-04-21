@@ -25,3 +25,5 @@ devices: [
   }
 ]
 
+instead of onClick - onChange
+handleChange
