@@ -1,5 +1,11 @@
 import axios from "axios";
 
+export function addField(name) {
+  return function(dispatch) {
+    dispatch({type: "ADD_FIELD", payload: name})
+  }
+}
+
 export function fetchData() {
   return function(dispatch) {
     axios.get("http://localhost:8080/search?query=heart")

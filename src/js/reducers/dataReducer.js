@@ -1,11 +1,25 @@
 export default function reducer(state={
     lowestLevelTerms: [],
+    devices: 
+    [
+      {
+        name: 'device-1',
+       device: '' 
+      }
+    ],
     fetching: false,
     fetched: false,
     error: null,
+    fieldDirty: false
   }, action) {
 
     switch (action.type) {
+      case "ADD_FIELD": {
+        return {...state, ...{devices : [...state.devices, {name : action.payload}]}};
+      }
+      case "FIELD_DIRTY": {
+        return {...state, fieldDirty: true}
+      }
       case "FETCH_DATA": {
         return {...state, fetching: true}
       }
@@ -13,8 +27,6 @@ export default function reducer(state={
         return {...state, fetching: false, error: action.payload}
       }
       case "FETCH_DATA_FULFILLED": {
-        console.log('state ', state)
-        console.log('action ', action)
         return {
           ...state,
           fetching: false,
