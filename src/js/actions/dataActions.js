@@ -6,6 +6,13 @@ export function addField(name) {
   }
 }
 
+export function updateState(value, index) {
+  return function(dispatch) {
+    console.log(index);
+    dispatch({type: "UPDATE_STATE", payload: value, 'index': index})
+  }
+}
+
 export function fetchData() {
   return function(dispatch) {
     axios.get("http://localhost:8080/search?query=heart")

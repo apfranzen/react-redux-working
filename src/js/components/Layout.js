@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import { fetchUser } from "../actions/userActions"
 import { fetchData } from "../actions/dataActions"
 import { addField } from "../actions/dataActions"
+import { updateState } from "../actions/dataActions"
 
 /*
 @connect(a, b) - expects 2 different functions
@@ -42,6 +43,11 @@ export default class Layout extends React.Component {
     this.props.dispatch(addField(name))
   }
 
+  handleChange(event) {
+    console.log(event.target)
+    this.props.dispatch(updateState(event.target.value, event.target.id))
+  }
+
 
   render() {
     const { user, lowestLevelTerms, devices } = this.props;
@@ -51,7 +57,13 @@ export default class Layout extends React.Component {
     //   return <button onClick={this.fetchData.bind(this)}>load cadvent suggestions</button>
     // }
 
-    const mappedDevices = devices.map(device => <label>{device.name}<input type="text" value={this.props.devices[0].device}></input></label>)
+    const mappedDevices = devices.map((device, index) => {
+      return <label>
+        {device.name}
+        <input type="text" 
+        value={this.props.devices[index].device} id={index} 
+        onChange={this.handleChange.bind(this)}></input></label>
+    })
 
 
     const mappedSuggestions = lowestLevelTerms.map(lowestLevelTerm => <li>{lowestLevelTerm.term.name}</li>)

@@ -2,9 +2,9 @@ export default function reducer(state={
     lowestLevelTerms: [],
     devices: 
     [
+     'device-1':
       {
-        name: 'device-1',
-       device: '' 
+       device: 'heart monitor' 
       }
     ],
     fetching: false,
@@ -14,6 +14,11 @@ export default function reducer(state={
   }, action) {
 
     switch (action.type) {
+      case "UPDATE_STATE": {
+        console.log(action)
+        return {...state};
+        // return {...state, devices[action.index].device: action.payload};
+      }
       case "ADD_FIELD": {
         return {...state, ...{devices : [...state.devices, {name : action.payload}]}};
       }
