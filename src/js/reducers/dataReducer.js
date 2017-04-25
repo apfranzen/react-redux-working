@@ -2,7 +2,7 @@ export default function reducer(state={
     lowestLevelTerms: [],
     devices: 
     {
-     'device-1':
+     "device-1":
       {
        device: 'Input Device Here' 
       }
@@ -16,7 +16,7 @@ export default function reducer(state={
 
     switch (action.type) {
       case "SUBMIT_FORM": {
-        console.log(action)
+        // todo: send the XHR request to send this
         return {
           ...state,
           inFlight: true

@@ -1,12 +1,5 @@
 import axios from "axios";
 
-export function handleSubmit(submission_data) {
-  console.log('data action hit')
-  return function(dispatch) {
-    dispatch({type: "SUBMIT_FORM", payload: submission_data})
-  }
-}
-
 export function addField(name) {
   return function(dispatch) {
     dispatch({type: "ADD_FIELD", payload: name})
@@ -26,8 +19,26 @@ export function fetchData() {
         dispatch({type: "FETCH_DATA_FULFILLED", payload: response.data})
       })
       .catch((err) => {
-        dispatch({type: "FETCH_DATA_FULFILLED", payload: err})
+        dispatch({type: "FETCH_DATA_ERROR", payload: err})
       })
+  }
+}
+
+export function handleSubmit(submission_data) {
+  console.log('data action hit')
+  return function(dispatch) {
+    axios.post("http://152.23.23.161:3000/post", {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: submission_data
+    })
+    .then((response) => {
+      dispatch({type: "SUBMIT_FORM", payload: response.data})
+    })
+    .catch((err) => {
+      dispatch({type: "SUBMIT_FORM_ERROR", payload: err})
+    })
   }
 }
 
