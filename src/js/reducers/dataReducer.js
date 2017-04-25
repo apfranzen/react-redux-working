@@ -10,10 +10,19 @@ export default function reducer(state={
     fetching: false,
     fetched: false,
     error: null,
-    fieldDirty: false
+    fieldDirty: false,
+    inFlight: false
   }, action) {
 
     switch (action.type) {
+      case "SUBMIT_FORM": {
+        console.log(action)
+        return {
+          ...state,
+          inFlight: true
+        }
+      }
+
       case "UPDATE_STATE": {
         console.log(action)
         return {
@@ -24,6 +33,7 @@ export default function reducer(state={
           }
         }
       }
+      
       case "ADD_FIELD": {
         return {
           ...state,

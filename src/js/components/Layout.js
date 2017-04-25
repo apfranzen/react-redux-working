@@ -5,6 +5,7 @@ import { fetchUser } from "../actions/userActions"
 import { fetchData } from "../actions/dataActions"
 import { addField } from "../actions/dataActions"
 import { updateState } from "../actions/dataActions"
+import { handleSubmit } from "../actions/dataActions"
 
 /*
 @connect(a, b) - expects 2 different functions
@@ -50,6 +51,12 @@ export default class Layout extends React.Component {
     this.props.dispatch(updateState(event.target.value, event.target.id))
   }
 
+  handleSubmit(event) {
+    event.preventDefault()    
+    console.log(this.props)
+    this.props.dispatch(handleSubmit(this.props))
+  }
+
 
   render() {
     const { user, lowestLevelTerms, devices } = this.props;
@@ -75,7 +82,7 @@ export default class Layout extends React.Component {
     return <div>
       {/*<h1>{this.props.user.name}</h1>*/}
       <h1>Untoured Events</h1>
-      <form onSubmit={this.props.handleSubmit}>
+      <form onSubmit={this.handleSubmit.bind(this)}>
   
           <div className="form-group row" >
             <label className="col-2 col-form-label">
@@ -103,7 +110,7 @@ export default class Layout extends React.Component {
                   }
                 </select>
               </div>*/}
-            <button type="button" value="Submit" className="btn btn-lg btn-block submit">Submit</button>
+            <button type="submit" value="Submit" className="btn btn-lg btn-block submit">Submit</button>
           </div>
         </form>
       

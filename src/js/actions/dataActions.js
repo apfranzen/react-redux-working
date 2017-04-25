@@ -1,5 +1,12 @@
 import axios from "axios";
 
+export function handleSubmit(submission_data) {
+  console.log('data action hit')
+  return function(dispatch) {
+    dispatch({type: "SUBMIT_FORM", payload: submission_data})
+  }
+}
+
 export function addField(name) {
   return function(dispatch) {
     dispatch({type: "ADD_FIELD", payload: name})
