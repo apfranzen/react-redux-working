@@ -39,7 +39,9 @@ export default class Layout extends React.Component {
   }
 
   addField() {
-    let name = 'device-' + (this.props.devices.length + 1)
+    let index = Object.keys(this.props.devices).length + 1
+    let name = ('device-' + index)
+    console.log(name)
     this.props.dispatch(addField(name))
   }
 
@@ -57,11 +59,13 @@ export default class Layout extends React.Component {
     //   return <button onClick={this.fetchData.bind(this)}>load cadvent suggestions</button>
     // }
 
-    const mappedDevices = devices.map((device, index) => {
+    const mappedDevices = Object.keys(devices).map((device, index) => {
       return <label>
         {device.name}
         <input type="text" 
-        value={this.props.devices[index].device} id={index} 
+       // placeholder={this.props.devices[`device-${index +1}`].device}
+        value={this.props.devices[`device-${index +1}`].device}
+        id={`device-${index + 1}`} 
         onChange={this.handleChange.bind(this)}></input></label>
     })
 
@@ -86,7 +90,7 @@ export default class Layout extends React.Component {
               <div className="col-5">
                 {mappedDevices}
               </div>
-              <button type="button" value="Submit" className="btn btn-lg" onClick={this.addField.bind(this)}>Add Device</button>
+              <button type="button" value="addField" className="btn btn-lg" onClick={this.addField.bind(this)}>Add Device</button>
               {/*<div className="col-5">
                 <select placeholder="suggestions" className="custom-select">
                   <option defaultValue="Suggestions">Suggestions</option>

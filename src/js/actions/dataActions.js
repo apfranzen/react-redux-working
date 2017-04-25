@@ -6,10 +6,9 @@ export function addField(name) {
   }
 }
 
-export function updateState(value, index) {
+export function updateState(value, id) {
   return function(dispatch) {
-    console.log(index);
-    dispatch({type: "UPDATE_STATE", payload: value, 'index': index})
+    dispatch({type: "UPDATE_STATE", payload: value, 'id': id})
   }
 }
 
