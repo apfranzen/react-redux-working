@@ -7,6 +7,8 @@ import { addField } from "../actions/dataActions"
 import { updateState } from "../actions/dataActions"
 import { handleSubmit } from "../actions/dataActions"
 
+import { Button, Col, Grid } from 'react-bootstrap';
+
 /*
 @connect(a, b) - expects 2 different functions
 function a is for getting store values in as props. Expects you to return an object
@@ -67,56 +69,54 @@ export default class Layout extends React.Component {
     // }
 
     const mappedDevices = Object.keys(devices).map((device, index) => {
-      return <label>
-        {device.name}
-        <input type="text" 
-       // placeholder={this.props.devices[`device-${index +1}`].device}
+      return <input type="text"
+        className="form-control device-input" 
         value={this.props.devices[`device-${index +1}`].device}
         id={`device-${index + 1}`} 
-        onChange={this.handleChange.bind(this)}></input></label>
+        onChange={this.handleChange.bind(this)}>
+        </input>
+
     })
 
 
-    const mappedSuggestions = lowestLevelTerms.map(lowestLevelTerm => <li>{lowestLevelTerm.term.name}</li>)
+    const mappedSuggestions = lowestLevelTerms.map(lowestLevelTerm => <div><li>{lowestLevelTerm.term.name}</li></div>)
 
     return <div>
       {/*<h1>{this.props.user.name}</h1>*/}
-      <h1>Untoured Events</h1>
-      <form onSubmit={this.handleSubmit.bind(this)}>
-  
+      <Grid bsClass="container">
+        <div className="row">
+          <div className="col-4">
+            <h1>Untoured Events</h1>
+          </div>
+          <div className="col-4">
+            <h1>2</h1>
+          </div>
+        </div>
+        <form onSubmit={this.handleSubmit.bind(this)}>
+
           <div className="form-group row" >
             <label className="col-2 col-form-label">
               Reaction:
-            </label>
-              <div className="col-5">
-                <input type="text" name="reaction" value={this.props.reaction} onChange={this.fetchData.bind(this)} />
-              </div>
+                </label>
+            <div className="col-5">
+              <input type="text" name="reaction" className="form-control" value={this.props.reaction} onChange={this.fetchData.bind(this)} />
+            </div>
+          </div>
+          <div className="form-group row" >
+
             <label className="col-2 col-form-label">
               Devices:
-            </label>
-              <div className="col-5">
-                {mappedDevices}
-              </div>
-              <button type="button" value="addField" className="btn btn-lg" onClick={this.addField.bind(this)}>Add Device</button>
-              {/*<div className="col-5">
-                <select placeholder="suggestions" className="custom-select">
-                  <option defaultValue="Suggestions">Suggestions</option>
-                  {
-                    this.props.form.suggestions.map(function(suggestion, i){
-                      return (
-                        <option key={i} value={suggestion.term.name}>{suggestion.term.name} Code: {suggestion.term.code}</option>
-                      )
-                    })
-                  }
-                </select>
-              </div>*/}
-            <button type="submit" value="Submit" className="btn btn-lg btn-block submit">Submit</button>
+                  </label>
+            <div className="col-5">
+              {mappedDevices}
+            </div>
+            <Button className="addField" type="button" value="addField" bsSize="med" onClick={this.addField.bind(this)}>Add Device</Button>
           </div>
+          <button type="submit" value="Submit" className="btn btn-lg btn-block submit">Submit</button>
         </form>
-      
-      
-      <h3>Low Level Terms</h3>
+        <h3>Low Level Terms</h3>
         <ul>{mappedSuggestions}</ul>
+      </ Grid>
     </div>
   }
 }
