@@ -4,13 +4,15 @@ export default function reducer(state={
     {
      "device-1":
       {
-       device: 'Input Device Here' 
+       device: '' 
       }
     },
+    reaction: '',
     fetching: false,
     fetched: false,
     error: null,
     fieldDirty: false,
+    timeout: 'no',
     inFlight: false
   }, action) {
 
@@ -25,11 +27,24 @@ export default function reducer(state={
 
       case "UPDATE_STATE": {
         console.log(action)
-        return {
+        var field = action.id.split("-")[0]
+        switch (field) {
+          case "reaction": {
+            console.log('reaction hit in dataReducer', action)
+            return {
+              ...state,
+              reaction: action.payload
+            }
+          }
+          case "device": {
+            console.log('device hit in dataReducer')
+            return {
           ...state,
           devices: {
             ...state.devices,
             [action.id]: { device: action.payload }
+          }
+        }
           }
         }
       }
@@ -39,12 +54,18 @@ export default function reducer(state={
           ...state,
           devices: {
             ...state.devices,
-            [action.payload]: { device: 'Input Device Here' }
+            [action.payload]: { device: '' }
           }
         }
       }
       case "FIELD_DIRTY": {
         return {...state, fieldDirty: true}
+      }
+      case "TIMEOUT": {
+        return {...state, timeout: action.payload}
+      }
+      case "FIELD_CLEAN": {
+        return {...state, fieldDirty: false}
       }
       case "FETCH_DATA": {
         return {...state, fetching: true}

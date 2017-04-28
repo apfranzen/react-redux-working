@@ -12,15 +12,17 @@ export function updateState(value, id) {
   }
 }
 
-export function fetchData() {
+export function fetchData(value, id) {
   return function(dispatch) {
-    axios.get("http://localhost:8080/search?query=heart")
-      .then((response) => {
-        dispatch({type: "FETCH_DATA_FULFILLED", payload: response.data})
-      })
-      .catch((err) => {
-        dispatch({type: "FETCH_DATA_ERROR", payload: err})
-      })
+    // dispatch({type: "UPDATE_STATE", payload: value, 'id': id})
+    return axios.get(`http://localhost:8080/search?query=${value}`)
+      // .then((response) => {
+      //   dispatch({type: "FETCH_DATA_FULFILLED", payload: response.data})
+      // })
+      // .catch((err) => {
+      //   dispatch({type: "FETCH_DATA_ERROR", payload: err})
+      // })
+      
   }
 }
 
