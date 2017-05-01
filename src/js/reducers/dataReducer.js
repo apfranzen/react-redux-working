@@ -11,8 +11,6 @@ export default function reducer(state={
     fetching: false,
     fetched: false,
     error: null,
-    fieldDirty: false,
-    timeout: 'no',
     inFlight: false
   }, action) {
 

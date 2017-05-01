@@ -16,6 +16,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "react": "^0.14.9",
     "react-autocomplete": "^1.5.1",
+    "react-autosuggest": "^9.0.1",
     "react-bootstrap": "^0.31.0",
     "react-dom": "^0.14.9",
     "react-redux": "^4.4.8",

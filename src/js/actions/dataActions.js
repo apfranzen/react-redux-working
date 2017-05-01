@@ -14,14 +14,14 @@ export function updateState(value, id) {
 
 export function fetchData(value, id) {
   return function(dispatch) {
-    // dispatch({type: "UPDATE_STATE", payload: value, 'id': id})
-    return axios.get(`http://localhost:8080/search?query=${value}`)
-      // .then((response) => {
-      //   dispatch({type: "FETCH_DATA_FULFILLED", payload: response.data})
-      // })
-      // .catch((err) => {
-      //   dispatch({type: "FETCH_DATA_ERROR", payload: err})
-      // })
+    console.log(value)
+    axios.get(`http://localhost:8080/search?query=${value}`)
+      .then((response) => {
+        dispatch({type: "FETCH_DATA_FULFILLED", payload: response.data})
+      })
+      .catch((err) => {
+        dispatch({type: "FETCH_DATA_ERROR", payload: err})
+      })
       
   }
 }
