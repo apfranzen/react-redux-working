@@ -72,7 +72,13 @@ function getSuggestionValue(suggestion) {
 
 function renderSuggestion(suggestion) {
   return (
-    <span>{suggestion.term.name} {suggestion.weight}</span>
+    <div class="row">
+      <div className="col-9">
+        <span>{suggestion.term.name} </span> 
+      </div>
+        <progress className="col-3" value={suggestion.weight} max="100">{suggestion.weight}</progress>
+      
+    </div>
   );
 }
 

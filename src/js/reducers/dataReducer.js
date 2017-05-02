@@ -1,4 +1,5 @@
-export default function reducer(state={
+export default function reducer(state=
+{
     lowestLevelTerms: [],
     devices: 
     {

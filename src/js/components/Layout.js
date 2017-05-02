@@ -54,7 +54,7 @@ export default class Layout extends React.Component {
       return <input type="text"
         className="form-control device-input" 
         id={`device-${index + 1}`}
-        placeholder={`Input device ${index +1} here`}   
+        placeholder={`Suspect product ${index +1}`}   
         value={this.props.devices[`device-${index +1}`].device}   
         key={index}
         onChange={this.handleChange.bind(this)}>
@@ -88,12 +88,12 @@ export default class Layout extends React.Component {
           <div className="form-group row" >
 
             <label className="col-2 col-form-label">
-              Devices:
+              Suspect Products:
                   </label>
             <div className="col-5">
               {mappedDevices}
             </div>
-            <Button className="addField" type="button" value="addField" bsSize="sm" onClick={this.addField.bind(this)}>Add Device</Button>
+            <Button className="addField" type="button" value="addField" bsSize="sm" onClick={this.addField.bind(this)}>Add Suspect Product Feild</Button>
           </div>
           <button type="submit" value="Submit" className="btn btn-lg btn-block submit">Submit</button>
         </form>
