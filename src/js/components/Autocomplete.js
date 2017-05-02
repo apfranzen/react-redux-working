@@ -1,5 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
+import axios from "axios";
+import lodash from "lodash";
 
 import { fetchUser } from "../actions/userActions"
 import { fetchData } from "../actions/dataActions"
@@ -14,93 +16,8 @@ import { Autocomplete } from "react-autocomplete"
 import Autosuggest from 'react-autosuggest';
 
 // Imagine you have a list of languages that you'd like to autosuggest.
-const languages = [
-  {
-    name: 'C',
-    year: 1972
-  },
-  {
-    name: 'Elm',
-    year: 2012
-  }
-];
 
-const results = [
-    {
-      "weight": 19,
-      "term": {
-        "code": 10009112,
-        "name": "Chronic pulmonary heart disease",
-        "current": true,
-        "preferred-term": {
-          "code": 10010970,
-          "name": "Cor pulmonale chronic"
-        }
-      }
-    },
-    {
-      "weight": 20,
-      "term": {
-        "code": 10054962,
-        "name": "Fetal heartbeat absent",
-        "current": true,
-        "preferred-term": {
-          "code": 10051139,
-          "name": "Foetal heart rate abnormal"
-        }
-      }
-    },
-    {
-      "weight": 28,
-      "term": {
-        "code": 10058322,
-        "name": "Foetal heart rate deceleration",
-        "current": true,
-        "preferred-term": {
-          "code": 10058322,
-          "name": "Foetal heart rate deceleration"
-        }
-      }
-    },
-    {
-      "weight": 29,
-      "term": {
-        "code": 10020080,
-        "name": "High output heart failure",
-        "current": true,
-        "preferred-term": {
-          "code": 10007560,
-          "name": "Cardiac failure high output"
-        }
-      }
-    },
-    {
-      "weight": 30,
-      "term": {
-        "code": 10025528,
-        "name": "Malformation heart (NOS)",
-        "current": true,
-        "preferred-term": {
-          "code": 10019273,
-          "name": "Heart disease congenital"
-        }
-      }
-    },
-    {
-      "weight": 30,
-      "term": {
-        "code": 10054387,
-        "name": "Fetal heart rate increased",
-        "current": true,
-        "preferred-term": {
-          "code": 10051138,
-          "name": "Foetal heart rate increased"
-        }
-      }
-    }
-]
-
-function getMatchingLanguages(value) {
+function getMatchingLanguages(value, results) {
   const escapedValue = escapeRegexCharacters(value.trim());
   
   if (escapedValue === '') {
@@ -109,7 +26,9 @@ function getMatchingLanguages(value) {
   
   const regex = new RegExp('^' + escapedValue, 'i');
 
-  return results.filter(result => regex.test(result.term.name));
+  let combinedResults = results['lowest-level-terms'].concat(results['preferred-terms'])
+
+  return _.orderBy(combinedResults, ['weight'], ['desc']).slice(0, 10)
 }
 
 /* ----------- */
@@ -148,21 +67,29 @@ const getSuggestions = value => {
 );*/
 
 function getSuggestionValue(suggestion) {
-  console.log(anything)
-  return suggestion.name;
+  return suggestion.term.name;
 }
 
 function renderSuggestion(suggestion) {
-  console.log(suggestion)
   return (
-    <span>{suggestion.term.name}</span>
+    <span>{suggestion.term.name} {suggestion.weight}</span>
   );
 }
 
+var timeout = null;
+
+@connect((store) => {
+  // console.log(store.data.reaction)
+  return {
+    reaction: store.data.reaction,
+  };
+})
+
 export default class Example extends React.Component {
-  constructor() {
+  constructor(reaction) {
     super();
 
+    // console.log(this.props.value)
     // Autosuggest is a controlled component.
     // This means that you need to provide an input value
     // and an onChange handler that updates this value (see below).
@@ -173,29 +100,43 @@ export default class Example extends React.Component {
       suggestions: [],
       isLoading: false
     };
-    this.lastRequestId = null;
   }
-
+  
   loadSuggestions(value) {
     // Cancel the previous request
-    if (this.lastRequestId !== null) {
-      clearTimeout(this.lastRequestId);
-    }
-    
+    // if (this.lastRequestId !== null) {
+    //   clearTimeout(this.lastRequestId);
+    // }
+    clearTimeout(timeout)
     this.setState({
       isLoading: true
     });
     
     // Fake request
-    this.lastRequestId = setTimeout(() => {
-      this.setState({
-        isLoading: false,
-        suggestions: getMatchingLanguages(value)
-      });
-    }, 1000);
+    console.log(value)
+
+    timeout = setTimeout(function() {
+      axios.get(`http://localhost:8080/search?query=${value}`)
+      .then((response) => {
+        console.log(response)
+        // dispatch({type: "FETCH_DATA_FULFILLED", payload: response.data})
+        this.setState({
+          isLoading: false,
+          suggestions: getMatchingLanguages(value, response.data)
+        })
+      })
+      .catch((err) => {
+        // dispatch({type: "FETCH_DATA_ERROR", payload: err})
+        console.log(err)
+      })
+    }.bind(this), 300)
+    
   }
 
   onChange = (event, { newValue }) => {
+  // onChange = (event, { newValue }) => {
+    console.log(newValue)
+    this.props.dispatch(updateState(event.target.value, event.target.id, event.target))
     this.setState({
       value: newValue
     });
@@ -216,12 +157,16 @@ export default class Example extends React.Component {
 
   render() {
     const { value, suggestions, isLoading } = this.state;
+    console.log(value)
 
     // Autosuggest will pass through all these props to the input element.
     const inputProps = {
-      placeholder: 'Type a programming language',
+      placeholder: 'Reaction',
       value,
-      onChange: this.onChange
+      onChange: this.onChange,
+      className: "form-control",
+      id: 'reaction'
+      // value: this.props.reaction
     };
     const status = (isLoading ? 'Loading...' : 'Type to load suggestions');
 
@@ -237,7 +182,8 @@ export default class Example extends React.Component {
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
-          inputProps={inputProps} />
+          inputProps={inputProps} 
+          />
       </div>
     );
   }

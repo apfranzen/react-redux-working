@@ -67,24 +67,22 @@ export default class Layout extends React.Component {
     return <div>
       <Grid bsClass="container">
         <div className="row">
-          <div className="col-4">
-            <h1>Untoured Events</h1>
-          </div>
-          <div className="col-4">
-            <h1>2</h1>
+          <div className="col-10">
+            <h1 className="text-center">Adverse Events Reporting</h1>
           </div>
         </div>
-        <p>The timeout status is: {this.props.timeout}</p>
+        <hr />
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="form-group row" >
             <label className="col-2 col-form-label">
               Reaction:
                 </label>
             <div className="col-5">
-              <input type="text" name="reaction" className="form-control" 
+              {/*<input type="text" name="reaction" className="form-control" 
               value={this.props.reaction} 
               id="reaction-1"
-              onChange={this.deviceHelper.bind(this)} />
+              onChange={this.deviceHelper.bind(this)} />*/}
+              <Example />
             </div>
           </div>
           <div className="form-group row" >
@@ -99,9 +97,8 @@ export default class Layout extends React.Component {
           </div>
           <button type="submit" value="Submit" className="btn btn-lg btn-block submit">Submit</button>
         </form>
-        <h3>Low Level Terms</h3>
         <ul>{mappedSuggestions}</ul>
-        <Example />
+        
       </ Grid>
     </div>
   }

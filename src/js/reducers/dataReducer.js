@@ -7,7 +7,7 @@ export default function reducer(state={
        device: '' 
       }
     },
-    reaction: '',
+    reaction: 'test reaction',
     fetching: false,
     fetched: false,
     error: null,
