@@ -1,6 +1,8 @@
 import React from "react"
 import { connect } from "react-redux"
 
+import Example from './Autocomplete.js'
+
 import { fetchUser } from "../actions/userActions"
 import { fetchData } from "../actions/dataActions"
 import { addField } from "../actions/dataActions"
@@ -99,6 +101,7 @@ export default class Layout extends React.Component {
         </form>
         <h3>Low Level Terms</h3>
         <ul>{mappedSuggestions}</ul>
+        <Example />
       </ Grid>
     </div>
   }
